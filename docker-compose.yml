@@ -23,11 +23,11 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - ./mysql:/var/liv/mysql
+      - ./mysql:/var/lib/mysql
     ports:
       - "3306:3306"
     environment: 
-      MYSQL_DATABASE: laravel
+      MYSQL_DATABASE: rcf
       MYSQL_USER: homestead
       MYSQL_PASSWORD: secret
       MYSQL_ROOT_PASSWORD: secret
