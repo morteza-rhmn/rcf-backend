@@ -4,6 +4,7 @@ namespace Tests\Unit\Http\Controllers\API\V01\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
@@ -14,10 +15,10 @@ class AuthControllerTest extends TestCase
     /**
      * Test Register
      */
-    public function test_register_should_be_validate()
+    public function test_register_should_be_validated()
     {
         $response = $this->postJson(route('auth.register'));
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_new_user_can_register()
@@ -27,16 +28,16 @@ class AuthControllerTest extends TestCase
             'email' => "mor98rah@gmail.com",
             'password' => "12345678"
         ]);
-        $response->assertStatus(201);
+        $response->assertStatus(Response::HTTP_CREATED);
     }
 
     /**
      * Test Login
      */
-    public function test_login_should_be_validate()
+    public function test_login_should_be_validated()
     {
         $response = $this->postJson(route('auth.login'));
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_user_can_login_with_true_credentials()
@@ -46,7 +47,7 @@ class AuthControllerTest extends TestCase
             'email' => $user->email,
             'password' => 'password'
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
     }
 
     /**
@@ -57,7 +58,7 @@ class AuthControllerTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson(route('auth.user'));
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
     }
 
     /**
@@ -68,6 +69,6 @@ class AuthControllerTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->postJson(route('auth.logout'));
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
     }
 }
