@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit\Http\Controllers\API\V01\Channel;
+namespace Tests\Unit\API\v1\Channel;
 
 use App\Models\Channel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class ChannelControllerTest extends TestCase
+class ChannelTest extends TestCase
 {
     use RefreshDatabase;
 

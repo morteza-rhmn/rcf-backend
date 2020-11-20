@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\API\V01\Channel;
+namespace App\Http\Controllers\API\v1\Channel;
 
 use App\Http\Controllers\Controller;
-use App\Models\Channel;
 use App\Repositories\ChannelRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class ChannelController extends Controller
