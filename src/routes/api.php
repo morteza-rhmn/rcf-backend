@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\API\V01\Auth\AuthController;
-use App\Http\Controllers\API\V01\Channel\ChannelController;
+use App\Http\Controllers\API\v1\Auth\AuthController;
+use App\Http\Controllers\API\v1\Channel\ChannelController;
 use Illuminate\Support\Facades\Route;
 
 /*
