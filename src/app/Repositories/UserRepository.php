@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,10 +10,11 @@ class UserRepository
 {
     /**
      * @param Request $request
+     * @return User
      */
-    public function create(Request $request): void
+    public function create(Request $request): User
     {
-        User::create([
+        return User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
