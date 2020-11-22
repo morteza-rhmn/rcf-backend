@@ -3,13 +3,35 @@
 namespace Tests\Unit\API\v1\Channel;
 
 use App\Models\Channel;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ChannelTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function registerRolesAndPermissions()
+    {
+        if (Role::where('name', config('permission.default_roles')[0])->count() < 1) {
+            foreach (config('permission.default_roles') as $role) {
+                Role::create([
+                    'name' => $role
+                ]);
+            }
+        }
+
+        if (Permission::where('name', config('permission.default_permissions')[0])->count() < 1) {
+            foreach (config('permission.default_permissions') as $permission) {
+                Permission::create([
+                    'name' => $permission
+                ]);
+            }
+        }
+    }
 
     /**
      * Test All Channels List Should Be Accessible
@@ -25,13 +47,23 @@ class ChannelTest extends TestCase
      */
     public function test_channel_creating_should_be_validated()
     {
-        $response = $this->postJson(route('channel.create'));
+        $this->registerRolesAndPermissions();
+
+        $user = User::factory()->create();
+        $user->givePermissionTo('channel management');
+
+        $response = $this->actingAs($user)->postJson(route('channel.create'));
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_channel_can_create()
     {
-        $response = $this->postJson(route('channel.create'), [
+        $this->registerRolesAndPermissions();
+
+        $user = User::factory()->create();
+        $user->givePermissionTo('channel management');
+
+        $response = $this->actingAs($user)->postJson(route('channel.create'), [
             'name' => 'laravel'
         ]);
         $response->assertStatus(Response::HTTP_CREATED);
@@ -39,17 +71,27 @@ class ChannelTest extends TestCase
 
     public function test_channel_update_should_be_validated()
     {
-        $response = $this->putJson(route('channel.update'));
+        $this->registerRolesAndPermissions();
+
+        $user = User::factory()->create();
+        $user->givePermissionTo('channel management');
+
+        $response = $this->actingAs($user)->putJson(route('channel.update'));
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_channel_can_update()
     {
+        $this->registerRolesAndPermissions();
+
+        $user = User::factory()->create();
+        $user->givePermissionTo('channel management');
+
         $channel = Channel::factory()->create([
             'name' => 'Laravel'
         ]);
 
-        $response = $this->putJson(route('channel.update'), [
+        $response = $this->actingAs($user)->putJson(route('channel.update'), [
             'id' => $channel->id,
             'name' => 'VueJs'
         ]);
@@ -64,15 +106,25 @@ class ChannelTest extends TestCase
      */
     public function test_channel_deleting_should_be_validated()
     {
-        $response = $this->deleteJson(route('channel.delete'));
+        $this->registerRolesAndPermissions();
+
+        $user = User::factory()->create();
+        $user->givePermissionTo('channel management');
+
+        $response = $this->actingAs($user)->deleteJson(route('channel.delete'));
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_channel_can_delete()
     {
+        $this->registerRolesAndPermissions();
+
+        $user = User::factory()->create();
+        $user->givePermissionTo('channel management');
+
         $channel = Channel::factory()->create();
 
-        $response = $this->deleteJson(route('channel.delete'), ['id' => $channel->id]);
+        $response = $this->actingAs($user)->deleteJson(route('channel.delete'), ['id' => $channel->id]);
 
         $response->assertStatus(Response::HTTP_OK);
     }
